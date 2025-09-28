@@ -8,51 +8,81 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Terra Space Theme - Deep space backgrounds with satellite data visualization colors */
+    --background: 220 27% 8%;
+    --foreground: 210 40% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 220 27% 12%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 220 27% 12%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Terra Blue - Primary satellite/space theme */
+    --primary: 217 91% 60%;
+    --primary-foreground: 220 27% 8%;
+    --primary-glow: 217 91% 70%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Earth Tones - Secondary colors */
+    --secondary: 220 27% 15%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted space grays */
+    --muted: 220 27% 18%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent - Terra satellite orange/amber */
+    --accent: 35 100% 55%;
+    --accent-foreground: 220 27% 8%;
 
-    --destructive: 0 84.2% 60.2%;
+    /* Heat/Climate colors */
+    --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
+    
+    /* Climate warning colors */
+    --warning: 45 100% 55%;
+    --warning-foreground: 220 27% 8%;
+    
+    /* Success/Solution colors */
+    --success: 142 71% 45%;
+    --success-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 27% 20%;
+    --input: 220 27% 15%;
+    --ring: 217 91% 60%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 98%;
+    /* Terra-specific colors */
+    --terra-blue: 217 91% 60%;
+    --terra-orange: 35 100% 55%;
+    --terra-purple: 270 60% 55%;
+    --terra-green: 142 71% 45%;
+    --terra-red: 0 84% 60%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    /* Climate gradients */
+    --gradient-space: linear-gradient(135deg, hsl(220 27% 8%), hsl(240 27% 12%), hsl(260 27% 16%));
+    --gradient-terra: linear-gradient(135deg, hsl(var(--terra-blue)), hsl(var(--terra-purple)));
+    --gradient-heat: linear-gradient(135deg, hsl(var(--terra-orange)), hsl(var(--terra-red)));
+    --gradient-cool: linear-gradient(135deg, hsl(var(--terra-blue)), hsl(var(--terra-green)));
 
-    --sidebar-primary: 240 5.9% 10%;
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-    --sidebar-primary-foreground: 0 0% 98%;
+    /* Shadows with terra glow */
+    --shadow-terra: 0 10px 40px -10px hsl(var(--terra-blue) / 0.3);
+    --shadow-heat: 0 10px 40px -10px hsl(var(--terra-orange) / 0.3);
+    --shadow-glow: 0 0 60px hsl(var(--primary-glow) / 0.4);
 
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 220 27% 10%;
+    --sidebar-foreground: 210 40% 90%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 220 27% 8%;
+    --sidebar-accent: 220 27% 15%;
+    --sidebar-accent-foreground: 210 40% 90%;
+    --sidebar-border: 220 27% 18%;
+    --sidebar-ring: 217 91% 60%;
   }
 
   .dark {
@@ -101,5 +131,61 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    background: var(--gradient-space);
+    min-height: 100vh;
+  }
+
+  /* Terra-specific component classes */
+  .terra-glow {
+    box-shadow: var(--shadow-terra);
+  }
+
+  .heat-glow {
+    box-shadow: var(--shadow-heat);
+  }
+
+  .space-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  /* Animated elements */
+  .pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+
+  .heat-wave {
+    animation: heat-wave 2s ease-in-out infinite;
+  }
+
+  @keyframes heat-wave {
+    0%, 100% { transform: scaleY(1) skewX(0deg); opacity: 0.6; }
+    50% { transform: scaleY(1.1) skewX(2deg); opacity: 0.8; }
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--secondary));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary));
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary-glow));
   }
 }

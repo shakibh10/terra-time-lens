@@ -20,7 +20,7 @@ const TerraInteractiveSystem = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [audioNarrating, setAudioNarrating] = useState(false);
 
-  // Comprehensive location data with Terra satellite insights
+  // Comprehensive location data with Terra satellite insights - 5 locations including Sahara
   const locations = {
     phoenix: {
       name: 'Phoenix, Arizona, USA',
@@ -39,7 +39,8 @@ const TerraInteractiveSystem = () => {
       solutions: 'Cool pavement programs, urban tree planting, reflective building materials',
       terraData: 'ASTER thermal data shows downtown temperatures 8-12°F higher than surrounding desert',
       instruments: ['ASTER', 'MODIS'],
-      color: 'terra-red'
+      color: 'terra-red',
+      videoFile: 'phoenix-25years.mp4'
     },
     austin: {
       name: 'Austin, Texas, USA',
@@ -58,7 +59,8 @@ const TerraInteractiveSystem = () => {
       solutions: 'Green building codes, urban canopy expansion, sustainable development zones',
       terraData: 'MODIS data reveals vegetation loss correlates directly with temperature increases',
       instruments: ['MODIS', 'MISR'],
-      color: 'terra-orange'
+      color: 'terra-orange',
+      videoFile: 'austin-25years.mp4'
     },
     jakarta: {
       name: 'Jakarta, Indonesia',
@@ -77,7 +79,8 @@ const TerraInteractiveSystem = () => {
       solutions: 'Vertical gardens, flood management, public transport expansion, emission controls',
       terraData: 'MISR aerosol data shows pollution exacerbating urban heat island effect',
       instruments: ['MISR', 'MOPITT'],
-      color: 'terra-purple'
+      color: 'terra-purple',
+      videoFile: 'jakarta-25years.mp4'
     },
     delhi: {
       name: 'Delhi, India',
@@ -96,7 +99,28 @@ const TerraInteractiveSystem = () => {
       solutions: 'Metro expansion, renewable energy adoption, green corridor development',
       terraData: 'MOPITT carbon monoxide data correlates with temperature spikes and health impacts',
       instruments: ['MOPITT', 'CERES'],
-      color: 'terra-green'
+      color: 'terra-green',
+      videoFile: 'delhi-25years.mp4'
+    },
+    sahara: {
+      name: 'Sahara Desert, North Africa',
+      coordinates: '23.4162°N, 25.6628°E',
+      population2000: 'Sparse nomadic populations',
+      population2025: 'Growing border settlements',
+      tempIncrease: 2.1,
+      keyChanges: [
+        'Desert expansion increased by 35%',
+        'Sand dune migration accelerated 250%',
+        'Vegetation at edges reduced 70%',
+        'Water sources decreased 40%',
+        'Dust storm frequency up 180%'
+      ],
+      climateImpacts: 'Surface temperatures now exceed 70°C, affecting regional weather patterns across Africa',
+      solutions: 'Great Green Wall initiative, solar farms, sustainable water management',
+      terraData: 'MODIS shows dramatic changes in desert boundaries and vegetation loss',
+      instruments: ['MODIS', 'ASTER'],
+      color: 'terra-blue',
+      videoFile: 'sahara-25years.mp4'
     }
   };
 
@@ -168,15 +192,34 @@ const TerraInteractiveSystem = () => {
     }
   ];
 
-  // Story scripts for enhanced narration
+  // Updated Interactive Narration Scripts
   const storyScripts = {
     intro: "Welcome to our journey through 25 years of Earth observation with NASA's Terra satellite. Since 2000, Terra's five instruments have watched our planet change in ways we never expected, revealing a hidden crisis in our cities.",
     phoenix: "Phoenix, Arizona - a desert city that became a furnace. Terra's ASTER instrument revealed how urban sprawl turned this desert into one of America's hottest urban heat islands, with temperatures rising 4.2°C above natural levels.",
     austin: "Austin, Texas - the tech boom city. MODIS data shows how rapid development and population growth created dangerous temperature spikes across the growing metropolitan area, with heat index values regularly exceeding safe limits.",
     jakarta: "Jakarta, Indonesia - a megacity under pressure. MISR's multi-angle views captured how massive coastal development and pollution created a perfect storm of heat and humidity that threatens millions of lives.",
     delhi: "Delhi, India - ancient city, modern crisis. MOPITT's pollution measurements revealed how industrial growth and vehicle emissions amplified the urban heat effect, creating deadly combinations of heat and air pollution.",
-    solutions: "These four cities represent a global crisis affecting 3.8 billion people. But Terra's data also points toward solutions - proven strategies that can reduce urban temperatures by 3-7°C and save lives.",
+    sahara: "Sahara Desert, North Africa - Earth's largest hot desert expanding relentlessly. MODIS data reveals how 25 years of climate change accelerated desert growth, pushing sand dunes into once-fertile lands and changing weather patterns across an entire continent.",
+    solutions: "These five locations represent a global crisis affecting 3.8 billion people. But Terra's data also points toward solutions - proven strategies that can reduce urban temperatures by 3-7°C and save lives.",
     conclusion: "The future of our cities hangs in the balance. Terra's 25 years of data give us the roadmap. The question isn't whether we can cool our cities - it's whether we'll act fast enough."
+  };
+
+  // Animation video player functionality
+  const playLocationAnimation = (locationKey: string) => {
+    const location = locations[locationKey as keyof typeof locations];
+    setSelectedLocation(locationKey);
+    setVideoPlaying(true);
+    setCurrentSection('story');
+    
+    // In a real implementation, this would load and play the specific video file
+    console.log(`Playing animation: ${location.videoFile}`);
+    
+    // Start narration for the location
+    if (!audioMuted) {
+      setAudioNarrating(true);
+      // Here you would integrate with text-to-speech or audio files
+      setTimeout(() => setAudioNarrating(false), 8000); // 8 second narration
+    }
   };
 
   // VR Experience Component with enhanced realism
@@ -696,20 +739,30 @@ const TerraInteractiveSystem = () => {
               </div>
             </div>
 
-            {/* Crisis Statistics */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* 25-Year Changes Showcase - Click to Play Animation */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
               {Object.entries(locations).map(([key, location]) => (
-                <Card key={key} className="border-primary/20 hover:border-primary/40 transition-all cursor-pointer heat-glow hover:scale-105">
+                <Card 
+                  key={key} 
+                  className="border-primary/20 hover:border-primary/40 transition-all cursor-pointer heat-glow hover:scale-105 group"
+                  onClick={() => playLocationAnimation(key)}
+                >
                   <CardContent className="p-6 text-center">
-                    <div className="text-4xl font-bold text-destructive mb-2">+{location.tempIncrease}°C</div>
-                    <div className="text-lg font-medium text-foreground mb-2">{location.name.split(',')[0]}</div>
-                    <div className="text-sm text-muted-foreground">Temperature increase since 2000</div>
-                    <div className="mt-3 flex justify-center space-x-1">
-                      {location.instruments.map((instrument) => (
-                        <Badge key={instrument} variant="outline" className="text-xs border-primary/30">
-                          {instrument}
-                        </Badge>
-                      ))}
+                    <div className="relative">
+                      <Play className="w-8 h-8 text-primary mx-auto mb-3 opacity-70 group-hover:opacity-100 transition-opacity" />
+                      <div className="text-3xl font-bold text-destructive mb-2">+{location.tempIncrease}°C</div>
+                      <div className="text-lg font-medium text-foreground mb-2">{location.name.split(',')[0]}</div>
+                      <div className="text-sm text-muted-foreground mb-3">25-year change since 2000</div>
+                      <div className="text-xs text-primary font-medium group-hover:text-primary-glow transition-colors">
+                        Click to watch transformation
+                      </div>
+                      <div className="mt-3 flex justify-center space-x-1">
+                        {location.instruments.map((instrument) => (
+                          <Badge key={instrument} variant="outline" className="text-xs border-primary/30">
+                            {instrument}
+                          </Badge>
+                        ))}
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -893,8 +946,8 @@ const TerraInteractiveSystem = () => {
               </p>
             </div>
 
-            {/* Enhanced Location Selector */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {/* Enhanced Location Selector - 5 Locations */}
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
               {Object.entries(locations).map(([key, location]) => (
                 <Button
                   key={key}
@@ -952,7 +1005,7 @@ const TerraInteractiveSystem = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
               {Object.entries(locations).map(([key, location]) => (
                 <Button
                   key={key}
